@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/ui/screens/forgot_password_email_screen.dart';
 import 'package:task_manager_app/ui/screens/sign_up_screen.dart';
 import 'package:task_manager_app/ui/widgets/screen_background.dart';
 
@@ -26,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(height: 60),
               Text(
                 'Get Started With',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
               TextFormField(decoration: InputDecoration(hintText: 'Email')),
@@ -73,7 +74,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _onTapSignInButton() {}
 
-  void _onTapForgotPasswordButton() {}
+  void _onTapForgotPasswordButton() {
+    Navigator.pushNamed(context, ForgotPasswordEmailScreen.name);
+  }
 
   void _onTapSignUpButton() {
     Navigator.pushNamed(context, SignUpScreen.name);

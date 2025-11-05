@@ -25,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 60),
               Text(
                 'Join With Us',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
               TextFormField(decoration: InputDecoration(hintText: 'Email')),
