@@ -57,7 +57,8 @@ class TaskManagerApp extends StatelessWidget {
             labelMedium: TextStyle(
               fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey,
             )
-        )
+        ),
+        scaffoldBackgroundColor: Colors.green.shade50
       ),
       routes: <String, WidgetBuilder>{
         SplashScreen.name : (_) => SplashScreen(),
