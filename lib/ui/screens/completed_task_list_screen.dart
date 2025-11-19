@@ -16,7 +16,7 @@ class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
       body: ListView.separated(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return TaskCard();
+          // return TaskCard();
         },
         separatorBuilder: (context, index) {
           return SizedBox(height: 8);

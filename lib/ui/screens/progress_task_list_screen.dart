@@ -16,7 +16,7 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
       body: ListView.separated(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return TaskCard();
+          // return TaskCard();
         },
         separatorBuilder: (context, index) {
           return SizedBox(height: 8);
