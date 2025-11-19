@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/data/models/task_count_model.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
 import 'package:task_manager_app/data/service/network_caller.dart';
 import 'package:task_manager_app/data/utils/urls.dart';
@@ -17,12 +18,15 @@ class NewTaskListScreen extends StatefulWidget {
 
 class _NewTaskListScreenState extends State<NewTaskListScreen> {
   bool _getNewTaskListInProgress = false;
+  bool _getTaskCountInProgress = false;
 
   List<TaskModel> _newTaskList = [];
+  List<TaskCountModel> _taskCountList = [];
 
   @override
   void initState() {
     super.initState();
+    _getTaskCountList();
     _getNewTaskList();
   }
 
@@ -70,28 +74,38 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   Widget _buildTaskSummaryListView() {
     return SizedBox(
       height: 60,
-      child: ListView.builder(
-        itemCount: 10,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 0,
-            color: Colors.white,
-            margin: EdgeInsets.only(left: 8),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8,
+      child: Visibility(
+        visible: _getTaskCountInProgress == false,
+        replacement: CenteredCircularProgress(),
+        child: ListView.builder(
+          itemCount: _taskCountList.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 0,
+              color: Colors.white,
+              margin: EdgeInsets.only(left: 8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      _taskCountList[index].sum.toString(),
+                      style: TextTheme.of(context).titleMedium,
+                    ),
+                    Text(
+                      _taskCountList[index].id,
+                      style: TextTheme.of(context).labelSmall,
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                children: [
-                  Text('12', style: TextTheme.of(context).titleMedium),
-                  Text('New', style: TextTheme.of(context).labelSmall),
-                ],
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -114,6 +128,27 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
     }
 
     _getNewTaskListInProgress = false;
+    setState(() {});
+  }
+
+  Future<void> _getTaskCountList() async {
+    _getTaskCountInProgress = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkCaller.getRequest(
+      Urls.taskCountUrl,
+    );
+
+    if (response.isSuccess) {
+      List<TaskCountModel> list = [];
+      for (Map<String, dynamic> jsonData in response.body['data']) {
+        list.add(TaskCountModel.fromJson(jsonData));
+      }
+      _taskCountList = list;
+    } else {
+      showSnackBarMessage(context, response.errorMessage);
+    }
+
+    _getTaskCountInProgress = false;
     setState(() {});
   }
 }
